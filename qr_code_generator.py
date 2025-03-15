@@ -33,7 +33,7 @@ inputwindowName.pack(pady=12, padx=10)
 
 
 # Generate the qr code as a file with the qecode library, also checks if the given link is valid and formats the filename
-def generate_qr_code(link, filename):
+def generate_qr_code(link: str, filename: str) -> None:
     try:
         if not link:
             notificationLabel.configure(
@@ -71,8 +71,8 @@ def generate_qr_code(link, filename):
         notificationLabel.configure(text=f"Error: {e}", text_color="red")
 
 
-# Fetches the link and the name once the button is clicked
-def startGenerate():
+# Fetches the link and the filename once the button is clicked
+def startGenerate() -> None:
     link = inputwindowLink.get().strip()
     filename = inputwindowName.get().strip()
     generate_qr_code(link, filename)
@@ -83,13 +83,13 @@ def isValidUrl(link: str) -> bool:
     return validators.url(link)
 
 
-submitbutton = ctk.CTkButton(
+generateButton = ctk.CTkButton(
     master=frame,
     text="Generate QR-Code",
     command=startGenerate,
     width=50,
 )
-submitbutton.pack(pady=12, padx=10)
+generateButton.pack(pady=12, padx=10)
 
 notificationLabel = ctk.CTkLabel(master=frame, text="", width=100)
 notificationLabel.pack(pady=12, padx=10)
