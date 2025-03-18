@@ -1,15 +1,21 @@
 import customtkinter as ctk
+from tkinter import filedialog
 import qrcode
 import qrcode.constants
 import validators
+import os
+from pyzbar.pyzbar import decode
+from PIL import Image
+import webbrowser
 
 
-# Code to produce QR Codes for given links. The Code will only accept valid links
+# Code to produce QR Codes for given links or decode QR Codes from png images and then open them automatically.
+# The Code will only accept valid links
 
 ctk.set_appearance_mode("dark")
 
 root = ctk.CTk()
-root.geometry("700x300")
+root.geometry("700x350")
 root.resizable(width=False, height=False)
 
 frame = ctk.CTkFrame(master=root)
@@ -83,6 +89,37 @@ def isValidUrl(link: str) -> bool:
     return validators.url(link)
 
 
+# import a png pic of a QR code from the file explorer
+def importQRCodePic() -> None:
+    filepath = filedialog.askopenfilename()
+
+    if not isPNG(filepath):
+        notificationLabel.configure(text="The File has to be a png", text_color="red")
+        return
+
+    decoded_data = decode(Image.open(filepath))
+
+    if not decoded_data:
+        notificationLabel.configure(text="No QR code found!", text_color="red")
+        return
+
+    url = decoded_data[0].data.decode("utf-8")
+
+    if not isValidUrl(url):
+        notificationLabel.configure(text="The Link is invalid", text_color="red")
+        return
+
+    webbrowser.open(url, new=0, autoraise=True)
+    notificationLabel.configure(text="QR Code opened successfully!", text_color="green")
+
+
+# check if the file of the given filepath is a png
+def isPNG(filepath) -> bool:
+    filename = os.path.basename(filepath)
+    return filename.endswith(".png")
+
+
+# Button to generate a QR Code png from a link
 generateButton = ctk.CTkButton(
     master=frame,
     text="Generate QR-Code",
@@ -90,6 +127,15 @@ generateButton = ctk.CTkButton(
     width=50,
 )
 generateButton.pack(pady=12, padx=10)
+
+# Button to open a link from a QR Code
+importFileButton = ctk.CTkButton(
+    master=frame,
+    text="Import a QR Code (as a png)",
+    command=importQRCodePic,
+    width=50,
+)
+importFileButton.pack(pady=12, padx=10)
 
 notificationLabel = ctk.CTkLabel(master=frame, text="", width=100)
 notificationLabel.pack(pady=12, padx=10)
