@@ -18,6 +18,9 @@ root.geometry("450x500")
 root.resizable(width=False, height=False)
 root.title("QRToolkit")
 
+# convert to QR code when pressing enter
+root.bind("<Return>", lambda event: startGenerate())
+
 # Set a gradient background color (light to dark)
 root.configure(bg="#1f1f1f")
 
