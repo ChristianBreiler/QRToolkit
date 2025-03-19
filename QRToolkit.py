@@ -63,8 +63,8 @@ notificationLabel = ctk.CTkLabel(
 notificationLabel.grid(row=3, column=0, columnspan=2, pady=10)
 
 # Image for buttons
-generateImage = Image.open("qr.png")
-scanImg = Image.open("scan.png")
+generateImage = Image.open("img/qr.png")
+scanImg = Image.open("img/scan.png")
 
 # Button to generate QR code
 generateButton = ctk.CTkButton(
