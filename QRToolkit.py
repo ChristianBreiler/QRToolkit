@@ -175,6 +175,9 @@ def importQRCodePic() -> None:
 
     filepath = filedialog.askopenfilename()
 
+    if filepath == "":
+        return
+    
     if not isPNG(filepath):
         notificationLabel.configure(text="The file must be a PNG", text_color="red")
         return
